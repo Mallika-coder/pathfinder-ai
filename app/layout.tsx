@@ -22,9 +22,12 @@
 // }
 
 
-"use client";
+import "./globals.css";
 
-import { motion, AnimatePresence } from "framer-motion";
+export const metadata = {
+  title: "PathFinder AI",
+  description: "Emergency Navigation for Unmapped Areas",
+};
 
 export default function RootLayout({
   children,
@@ -33,18 +36,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-[#020617] text-white">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={Math.random()}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+      <body className="bg-slate-950 text-white antialiased">
+        {children}
       </body>
     </html>
   );

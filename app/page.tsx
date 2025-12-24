@@ -41,33 +41,35 @@
 
 import Link from "next/link";
 
-export default function LandingPage() {
+export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-crisis-bg">
-      <div className="max-w-4xl text-center space-y-8 px-6">
-        <h1 className="text-5xl font-bold text-white">
+    <main className="min-h-screen flex items-center justify-center px-6">
+      <div className="max-w-3xl text-center space-y-8">
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">
           PathFinder AI
         </h1>
 
-        <p className="text-xl text-slate-300">
+        <p className="text-xl text-slate-400">
           Mapping the Unmapped. Saving the Unseen.
         </p>
 
-        <p className="text-slate-400">
-          AI-powered emergency navigation for informal settlements where GPS fails.
+        <p className="text-slate-300">
+          AI-powered emergency navigation for informal settlements where
+          traditional GPS fails.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex justify-center gap-6 pt-6">
           <Link
             href="/sentinel"
-            className="bg-crisis-danger px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90"
+            className="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold"
           >
             🚨 Report Blockage
           </Link>
 
+
           <Link
             href="/dashboard"
-            className="bg-crisis-safe px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90"
+            className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-semibold"
           >
             🚑 Responder Dashboard
           </Link>
