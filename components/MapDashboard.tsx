@@ -239,8 +239,8 @@ export default function MapDashboard() {
               }}
               icon={{
                 url: r.ambulanceReady
-                  ? "/markers/green.png"
-                  : "/markers/red.png",
+                  ? "/markers/green.jpg"
+                  : "/markers/red.jpg",
                 scaledSize: new window.google.maps.Size(36, 36),
               }}
               onClick={() => setSelected(r)}
