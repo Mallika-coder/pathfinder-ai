@@ -1,17 +1,38 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
-  authDomain: "pathfinder-ai.firebaseapp.com",
-  projectId: "pathfinder-ai",
-  storageBucket: "pathfinder-ai.appspot.com",
-  messagingSenderId: "000000",
-  appId: "1:000:web:000"
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+export const auth = getAuth(app);
+
+// Types for our data structures
+export interface ObstacleReport {
+  id: string;
+  imageUrl: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  timestamp: string;
+  ambulanceReady: boolean;
+  laneWidth: number;
+  obstacles: string[];
+  summary: string;
+  severity: 'low' | 'medium' | 'high';
+  reportedBy?: string;
+  status: 'reported' | 'verified' | 'resolved';
+}
