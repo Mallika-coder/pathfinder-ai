@@ -175,7 +175,7 @@ pathfinder-ai/
 └── tailwind.config.ts
 
 🚀 Getting Started (Local Setup)
-git clone https://github.com/your-org/pathfinder-ai
+git clone https://github.com/Mallika-coder/pathfinder-ai
 cd pathfinder-ai
 npm install
 npm run dev
