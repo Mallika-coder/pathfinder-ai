@@ -1,40 +1,78 @@
-// app/page.tsx me ye changes karein:
-import MapDashboard from "../components/MapDashboard";
-import SentinelUpload from "../components/SentinelUpload";
-import AnalyticsPanel from "../components/AnalyticsPanel";
+// // app/page.tsx me ye changes karein:
+// import MapDashboard from "../components/MapDashboard";
+// import SentinelUpload from "../components/SentinelUpload";
+// import AnalyticsPanel from "../components/AnalyticsPanel";
 
-export default function Home() {
+// export default function Home() {
+//   return (
+//     <main className="w-full h-screen flex flex-col lg:flex-row">
+//       {/* Sidebar */}
+//       <aside className="w-full lg:w-80 bg-crisis-panel p-4 lg:p-6 space-y-6 overflow-y-auto">
+//         <div className="text-center lg:text-left">
+//           <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
+//             PathFinder AI
+//           </h1>
+//           <p className="text-sm text-slate-400">
+//             Emergency Navigation System
+//           </p>
+//         </div>
+        
+//         <SentinelUpload />
+//         <AnalyticsPanel />
+        
+//         <div className="text-xs text-slate-500 text-center lg:text-left">
+//           <p>Powered by Google Gemini AI</p>
+//           <p>© 2025 PathFinder AI</p>
+//         </div>
+//       </aside>
+
+//       {/* Map */}
+//       <section className="flex-1 relative">
+//         <MapDashboard />
+        
+//         {/* Mobile overlay hint */}
+//         <div className="lg:hidden absolute top-4 left-4 bg-crisis-panel/90 backdrop-blur px-3 py-2 rounded-lg">
+//           <p className="text-xs text-white">Tap markers for details</p>
+//         </div>
+//       </section>
+//     </main>
+//   );
+// }
+
+import Link from "next/link";
+
+export default function LandingPage() {
   return (
-    <main className="w-full h-screen flex flex-col lg:flex-row">
-      {/* Sidebar */}
-      <aside className="w-full lg:w-80 bg-crisis-panel p-4 lg:p-6 space-y-6 overflow-y-auto">
-        <div className="text-center lg:text-left">
-          <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-            PathFinder AI
-          </h1>
-          <p className="text-sm text-slate-400">
-            Emergency Navigation System
-          </p>
-        </div>
-        
-        <SentinelUpload />
-        <AnalyticsPanel />
-        
-        <div className="text-xs text-slate-500 text-center lg:text-left">
-          <p>Powered by Google Gemini AI</p>
-          <p>© 2025 PathFinder AI</p>
-        </div>
-      </aside>
+    <main className="min-h-screen flex items-center justify-center bg-crisis-bg">
+      <div className="max-w-4xl text-center space-y-8 px-6">
+        <h1 className="text-5xl font-bold text-white">
+          PathFinder AI
+        </h1>
 
-      {/* Map */}
-      <section className="flex-1 relative">
-        <MapDashboard />
-        
-        {/* Mobile overlay hint */}
-        <div className="lg:hidden absolute top-4 left-4 bg-crisis-panel/90 backdrop-blur px-3 py-2 rounded-lg">
-          <p className="text-xs text-white">Tap markers for details</p>
+        <p className="text-xl text-slate-300">
+          Mapping the Unmapped. Saving the Unseen.
+        </p>
+
+        <p className="text-slate-400">
+          AI-powered emergency navigation for informal settlements where GPS fails.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/sentinel"
+            className="bg-crisis-danger px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90"
+          >
+            🚨 Report Blockage
+          </Link>
+
+          <Link
+            href="/dashboard"
+            className="bg-crisis-safe px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90"
+          >
+            🚑 Responder Dashboard
+          </Link>
         </div>
-      </section>
+      </div>
     </main>
   );
 }
