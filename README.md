@@ -1,6 +1,9 @@
 📍 PathFinder AI
 by Sprint Sisters
 
+<img width="1854" height="960" alt="image" src="https://github.com/user-attachments/assets/8e14122b-5928-4e98-9bdf-eb7c1fdbf7e8" />
+
+
 Mapping the Unmapped. Saving the Unseen.
 
 🌍 Problem Statement
