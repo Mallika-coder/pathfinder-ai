@@ -1,5 +1,6 @@
 📍 PathFinder AI
 by Sprint Sisters
+![Uploading image.png…]()
 
 Mapping the Unmapped. Saving the Unseen.
 
