@@ -2,7 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  background-color: #0f172a;
-  color: white;
+@layer utilities {
+  .glass-panel {
+    @apply bg-zinc-950/40 backdrop-blur-xl border border-white/10 shadow-xl;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }

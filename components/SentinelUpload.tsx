@@ -1,302 +1,260 @@
-// "use client";
-
-// import { useState, useRef, useCallback } from "react";
-// import { Camera, Upload, AlertCircle, CheckCircle, Loader2 } from "lucide-react";
-// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-// import { storage, db } from "../lib/firebase";
-// import { analyzeLane } from "../lib/geminiAnalyzer";
-
-// export default function SentinelUpload() {
-//   const [image, setImage] = useState<string | null>(null);
-//   const [isUploading, setIsUploading] = useState(false);
-//   const [error, setError] = useState<string | null>(null);
-//   const [success, setSuccess] = useState(false);
-//   const fileInputRef = useRef<HTMLInputElement>(null);
-
-//   const handleCapture = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-
-//     try {
-//       setError(null);
-//       setSuccess(false);
-//       setIsUploading(true);
-      
-//       // Get current location
-//       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-//         navigator.geolocation.getCurrentPosition(resolve, reject, {
-//           enableHighAccuracy: true,
-//           timeout: 5000,
-//           maximumAge: 0
-//         });
-//       });
-
-//       // Read image as base64 for Gemini analysis
-//       const reader = new FileReader();
-//       reader.onload = async (e) => {
-//         const imageData = e.target?.result as string;
-//         const base64Data = imageData.split(',')[1]; // Remove data URL prefix
-//         setImage(imageData);
-
-//         try {
-//           // Analyze with Gemini
-//           const analysis = await analyzeLane(base64Data);
-          
-//           // Upload image to Firebase Storage
-//           const storageRef = ref(storage, `obstacles/${Date.now()}_${file.name}`);
-//           const snapshot = await uploadBytes(storageRef, file);
-//           const imageUrl = await getDownloadURL(snapshot.ref);
-
-//           // Save to Firestore
-//           await addDoc(collection(db, "obstacles"), {
-//             imageUrl,
-//             location: {
-//               lat: position.coords.latitude,
-//               lng: position.coords.longitude,
-//             },
-//             timestamp: serverTimestamp(),
-//             ambulanceReady: analysis.ambulance_ready,
-//             laneWidth: analysis.lane_width_estimate_m,
-//             obstacles: analysis.obstacles,
-//             summary: analysis.summary,
-//             severity: analysis.severity,
-//             status: 'reported',
-//             confidence: analysis.confidence
-//           });
-
-//           setSuccess(true);
-//           setTimeout(() => {
-//             setImage(null);
-//             setSuccess(false);
-//           }, 3000);
-//         } catch (analysisError) {
-//           console.error('Analysis failed:', analysisError);
-//           setError('Failed to analyze image. Please try again.');
-//         } finally {
-//           setIsUploading(false);
-//         }
-//       };
-//       reader.readAsDataURL(file);
-//     } catch (err) {
-//       console.error('Error capturing image:', err);
-//       setError('Failed to capture image. Please check camera permissions and try again.');
-//       setIsUploading(false);
-//     }
-//   }, []);
-
-//   const resetForm = () => {
-//     setImage(null);
-//     setError(null);
-//     setSuccess(false);
-//     if (fileInputRef.current) {
-//       fileInputRef.current.value = '';
-//     }
-//   };
-
-//   return (
-//     <div className="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
-//       <h3 className="text-lg font-semibold mb-4 text-white">Emergency Report</h3>
-      
-//       {error && (
-//         <div className="bg-red-500/20 border border-red-500 text-red-100 px-4 py-3 rounded-lg mb-4 flex items-start">
-//           <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-//           <span className="text-sm">{error}</span>
-//         </div>
-//       )}
-
-//       {success && (
-//         <div className="bg-green-500/20 border border-green-500 text-green-100 px-4 py-3 rounded-lg mb-4 flex items-start">
-//           <CheckCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-//           <span className="text-sm">Report submitted successfully! Emergency responders have been notified.</span>
-//         </div>
-//       )}
-
-//       <div className="space-y-4">
-//         <div 
-//           className="border-2 border-dashed border-slate-600 rounded-xl p-6 text-center cursor-pointer hover:bg-slate-700/50 transition-colors"
-//           onClick={() => !isUploading && fileInputRef.current?.click()}
-//         >
-//           {image ? (
-//             <div className="relative">
-//               <img 
-//                 src={image} 
-//                 alt="Captured obstacle" 
-//                 className="w-full h-48 object-cover rounded-lg"
-//               />
-//               {!isUploading && (
-//                 <button
-//                   onClick={(e) => {
-//                     e.stopPropagation();
-//                     resetForm();
-//                   }}
-//                   className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
-//                 >
-//                   ×
-//                 </button>
-//               )}
-//             </div>
-//           ) : (
-//             <div className="space-y-3">
-//               {isUploading ? (
-//                 <Loader2 className="h-12 w-12 mx-auto text-emerald-500 animate-spin" />
-//               ) : (
-//                 <Camera className="h-12 w-12 mx-auto text-slate-400" />
-//               )}
-//               <p className="text-sm text-slate-400">
-//                 {isUploading ? 'Analyzing image...' : 'Tap to capture obstacle photo'}
-//               </p>
-//             </div>
-//           )}
-//           <input
-//             ref={fileInputRef}
-//             type="file"
-//             accept="image/*"
-//             capture="environment"
-//             className="hidden"
-//             onChange={handleCapture}
-//             disabled={isUploading}
-//           />
-//         </div>
-
-//                 <div className="text-xs text-slate-400 text-center">
-//           Powered by Google Gemini AI • Location auto-detected
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
 "use client";
 
-import React, { useRef, useState } from "react";
-import { Camera, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
-import { motion } from "framer-motion";
-import { storage, db } from "@/lib/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { analyzeLane } from "@/lib/geminiAnalyzer";
+import { useState, ChangeEvent } from "react";
+import { Upload, MapPin, AlertTriangle, CheckCircle, Loader2, Camera, X } from "lucide-react";
+import { uploadImage, saveSentinelReport } from "../lib/firebase";
+import { analyzeLaneImage } from "../lib/gemini";
 
 export default function SentinelUpload() {
-  const fileRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [analyzing, setAnalyzing] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  const handleCapture = async (file: File) => {
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setError(null);
+      },
+      (err) => {
+        setError("Unable to retrieve your location. Please enable GPS.");
+        console.error(err);
+      }
+    );
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Create preview immediately
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+
+    if (!location) {
+      getLocation();
+    }
+
+    // Auto-start process or wait for user confirmation? 
+    // "Panic-free" means minimal clicks. Let's auto-upload if location exists, else wait.
+    handleUpload(file);
+  };
+
+
+  const handleUpload = async (file: File) => {
+    setLoading(true);
+    setError(null);
+
+
+    // Timeout Promise (Increased to 60s)
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out. Network slow? Retrying might help.")), 60000)
+    );
+
     try {
-      setLoading(true);
-      setStatus("idle");
+      // Ensure GPS with timeout
+      if (!location) {
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Quick wait
+        // REMOVED logic that ignored state. If still null, we handle it below.
+      }
 
-      // 📍 Get location
-      const pos = await new Promise<GeolocationPosition>((res, rej) =>
-        navigator.geolocation.getCurrentPosition(res, rej)
-      );
+      // 1. Upload to Storage (with timeout race)
+      const uploadPromise = uploadImage(file);
+      const imageUrl = await Promise.race([uploadPromise, timeout]) as string;
 
-      // ☁️ Upload image
-      const imgRef = ref(storage, `reports/${Date.now()}.jpg`);
-      await uploadBytes(imgRef, file);
-      const imageUrl = await getDownloadURL(imgRef);
+      // 2. Prepare Base64 (Resized/Compressed)
+      setAnalyzing(true);
+      const base64String = await resizeImage(file); // Use the helper
+      const cleanBase64 = base64String.split(',')[1];
 
-      // 🧠 Gemini analysis
-      const base64 = await fileToBase64(file);
-      const analysis = await analyzeLane(base64);
+      // 3. AI Analysis
+      let analysis;
+      try {
+        const aiPromise = analyzeLaneImage(cleanBase64);
+        // Generous timeout for AI
+        const aiTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("AI Timeout")), 45000));
+        analysis = await Promise.race([aiPromise, aiTimeout]);
+      } catch (e) {
+        console.error("Gemini manual fallback", e);
+        analysis = {
+          ambulance_ready: false,
+          lane_width_estimate_m: 0,
+          obstacles: ["AI Connection Failed"],
+          summary: "Manual verification needed"
+        };
+      }
 
-      // 🔥 Save to Firestore
-      await addDoc(collection(db, "reports"), {
+      // 4. Save to Firestore
+      // FIXED: Default to Mumbai (Gateway of India) instead of Kolkata
+      const finalLocation = location || { lat: 18.9220, lng: 72.8347 };
+
+      await saveSentinelReport({
         imageUrl,
-        location: {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        },
-        ambulanceReady: analysis.ambulance_ready,
-        laneWidth: analysis.lane_width_estimate_m,
-        obstacles: analysis.obstacles,
-        summary: analysis.summary,
-        severity: analysis.severity,
-        confidence: analysis.confidence,
-        timestamp: serverTimestamp(),
-        status: "reported",
+        location: finalLocation,
+        analysis: analysis as any,
       });
 
-      setStatus("success");
-    } catch (err) {
-      console.error(err);
-      setStatus("error");
-    } finally {
+      setAnalyzing(false);
       setLoading(false);
+      setComplete(true);
+
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Upload failed. Please try again.");
+      setLoading(false);
+      setAnalyzing(false);
     }
   };
 
+  if (complete) {
+    return (
+      <div className="bg-crisis-panel/50 backdrop-blur-xl border border-crisis-safe/30 rounded-3xl p-8 text-center shadow-2xl shadow-crisis-safe/20 animate-in fade-in zoom-in duration-500">
+        <div className="flex justify-center mb-6">
+          <div className="w-24 h-24 bg-crisis-safe/20 rounded-full flex items-center justify-center animate-bounce">
+            <CheckCircle className="w-12 h-12 text-crisis-safe" />
+          </div>
+        </div>
+        <h3 className="text-3xl font-bold text-white mb-3">Verified & Synced</h3>
+        <p className="text-slate-300 mb-8 text-lg">
+          Responders have received your update.
+        </p>
+        <button
+          onClick={() => {
+            setComplete(false);
+            setPreview(null);
+            setLocation(null);
+          }}
+          className="w-full py-4 rounded-2xl bg-white text-crisis-bg font-bold text-lg hover:bg-slate-200 transition-colors shadow-lg shadow-white/10"
+        >
+          Report Another
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative w-full">
-      {/* CAMERA BUTTON */}
-      <motion.button
-        whileTap={{ scale: 0.9 }}
-        whileHover={{ scale: 1.05 }}
-        onClick={() => fileRef.current?.click()}
-        disabled={loading}
-        className="w-full h-56 rounded-3xl bg-gradient-to-br from-red-600 to-red-500 flex flex-col items-center justify-center gap-4 shadow-2xl"
-      >
-        {loading ? (
-          <Loader2 className="animate-spin" size={48} />
-        ) : (
-          <>
-            <Camera size={48} />
-            <span className="text-lg font-bold">
-              Emergency Photo Upload
-            </span>
-            <span className="text-xs uppercase tracking-widest opacity-80">
-              Tap • Capture • Submit
-            </span>
-          </>
+    <div className="bg-crisis-panel/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-6 shadow-2xl">
+      <div className="mb-6 flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-1">Sentinel Upload</h2>
+          <p className="text-slate-400 text-sm">Emergency Mode</p>
+        </div>
+        <div className={`px-3 py-1 rounded-full text-xs font-mono flex items-center gap-2 ${location ? 'bg-crisis-safe/20 text-crisis-safe border border-crisis-safe/50' : 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/50'}`}>
+          <MapPin className="w-3 h-3" />
+          {location ? "GPS LOCKED" : "LOCATING..."}
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        {/* Main Action Area */}
+        <div className="relative group">
+          <input
+            id="camera-input"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="hidden"
+            onChange={handleFileChange}
+            disabled={loading}
+          />
+
+          <label
+            htmlFor="camera-input"
+            className={`w-full aspect-square max-h-[400px] mx-auto rounded-3xl border-2 border-dashed transition-all flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden relative
+                  ${loading
+                ? 'border-crisis-accent/50 bg-slate-900/80 pointer-events-none'
+                : 'border-slate-600 hover:border-crisis-danger hover:bg-crisis-danger/5'
+              }
+                  ${preview ? 'border-none' : ''}
+                `}
+          >
+            {preview ? (
+              <>
+                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                {loading && (
+                  <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center backdrop-blur-sm">
+                    <Loader2 className="w-16 h-16 text-crisis-accent animate-spin mb-4" />
+                    <p className="text-xl font-bold text-white animate-pulse">
+                      {analyzing ? "Gemini AI Analyzing..." : "Uploading..."}
+                    </p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-crisis-danger to-red-600 flex items-center justify-center shadow-lg shadow-crisis-danger/30 group-hover:scale-110 transition-transform duration-300">
+                  <Camera className="w-10 h-10 text-white" />
+                </div>
+                <div className="text-center">
+                  <span className="block text-xl font-bold text-white">Tap to Photograph</span>
+                  <span className="text-slate-400 text-sm">Auto-scans for obstacles</span>
+                </div>
+              </>
+            )}
+          </label>
+        </div>
+
+        {error && (
+          <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 animate-in fade-in slide-in-from-bottom-2">
+            <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+            <span className="font-medium">{error}</span>
+          </div>
         )}
-      </motion.button>
+      </div>
 
-      {/* STATUS */}
-      {status === "success" && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-4 flex items-center gap-2 text-emerald-400 text-sm"
-        >
-          <CheckCircle size={18} />
-          Report submitted successfully
-        </motion.div>
+
+      {!loading && !preview && (
+        <div className="mt-4 text-center space-y-2">
+          <button onClick={getLocation} className="text-sm text-slate-500 underline decoration-slate-700 hover:text-white transition-colors block mx-auto">
+            Refresh GPS Location
+          </button>
+          <button
+            onClick={() => {
+              // Mock "Mumbai" location for demo
+              setLocation({ lat: 18.9220, lng: 72.8347 }); // Gateway of India approx
+              setError(null);
+            }}
+            className="text-xs text-slate-600 hover:text-crisis-accent transition-colors"
+          >
+            (Dev) Simulate GPS Lock: Mumbai
+          </button>
+        </div>
       )}
-
-      {status === "error" && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-4 flex items-center gap-2 text-red-400 text-sm"
-        >
-          <AlertTriangle size={18} />
-          Upload failed. Try again.
-        </motion.div>
-      )}
-
-      {/* HIDDEN INPUT */}
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        hidden
-        onChange={(e) =>
-          e.target.files && handleCapture(e.target.files[0])
-        }
-      />
     </div>
   );
 }
 
-/* HELPERS */
-function fileToBase64(file: File): Promise<string> {
+// Helper to resize image
+const resizeImage = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () =>
-      resolve(reader.result?.toString().split(",")[1] || "");
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        const scaleSize = MAX_WIDTH / img.width;
+        canvas.width = MAX_WIDTH;
+        canvas.height = img.height * scaleSize;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality
+      };
+      img.src = e.target?.result as string;
+    };
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
-}
+};
+

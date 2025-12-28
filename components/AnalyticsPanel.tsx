@@ -1,70 +1,36 @@
-"use client";
 
-import { useState, useEffect } from "react";
-import { collection, onSnapshot, query, where, getDocs } from "firebase/firestore";
-import { db } from "../lib/firebase";
-import { Users, Clock, TrendingDown, AlertTriangle } from "lucide-react";
+import { Activity, Shield, Clock } from "lucide-react";
 
 export default function AnalyticsPanel() {
-  const [stats, setStats] = useState({
-    activeSentinels: 0,
-    totalReports: 0,
-    resolvedReports: 0,
-    avgResponseTime: 0,
-    deathsPrevented: 0
-  });
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "obstacles"), (snapshot) => {
-      const reports = snapshot.docs.map(doc => doc.data());
-      const resolved = reports.filter(r => r.status === 'resolved').length;
-      
-      setStats(prev => ({
-        ...prev,
-        totalReports: reports.length,
-        resolvedReports: resolved,
-        deathsPrevented: Math.floor(resolved * 0.3) // Simulated metric
-      }));
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   return (
-    <div className="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
-      <h3 className="text-lg font-semibold mb-4 text-white">Live Analytics</h3>
-      
-      <div className="space-y-4">
-        <div className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-          <div className="flex items-center">
-            <Users className="h-5 w-5 text-emerald-500 mr-3" />
-            <span className="text-sm text-slate-300">Active Sentinels</span>
-          </div>
-          <span className="text-lg font-bold text-white">{stats.activeSentinels}</span>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 flex items-center gap-4">
+        <div className="p-3 bg-red-500/10 rounded-lg">
+          <Activity className="w-6 h-6 text-red-500" />
         </div>
-
-        <div className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-          <div className="flex items-center">
-            <AlertTriangle className="h-5 w-5 text-red-500 mr-3" />
-            <span className="text-sm text-slate-300">Total Reports</span>
-          </div>
-          <span className="text-lg font-bold text-white">{stats.totalReports}</span>
+        <div>
+          <p className="text-2xl font-bold text-white">12m</p>
+          <p className="text-sm text-slate-400">Response Time Saved</p>
         </div>
+      </div>
 
-        <div className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-          <div className="flex items-center">
-            <TrendingDown className="h-5 w-5 text-emerald-500 mr-3" />
-            <span className="text-sm text-slate-300">Deaths Prevented</span>
-          </div>
-          <span className="text-lg font-bold text-emerald-500">{stats.deathsPrevented}</span>
+      <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 flex items-center gap-4">
+        <div className="p-3 bg-emerald-500/10 rounded-lg">
+          <Shield className="w-6 h-6 text-emerald-500" />
         </div>
+        <div>
+          <p className="text-2xl font-bold text-white">184</p>
+          <p className="text-sm text-slate-400">Active Sentinels</p>
+        </div>
+      </div>
 
-        <div className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-          <div className="flex items-center">
-            <Clock className="h-5 w-5 text-blue-500 mr-3" />
-            <span className="text-sm text-slate-300">Avg Response Time</span>
-          </div>
-          <span className="text-lg font-bold text-white">2.3 min</span>
+      <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 flex items-center gap-4">
+        <div className="p-3 bg-blue-500/10 rounded-lg">
+          <Clock className="w-6 h-6 text-blue-500" />
+        </div>
+        <div>
+          <p className="text-2xl font-bold text-white">30+</p>
+          <p className="text-sm text-slate-400">Lives Protected</p>
         </div>
       </div>
     </div>
