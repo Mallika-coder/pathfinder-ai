@@ -138,8 +138,9 @@ export default function Home() {
           </div>
         </div>
 
+
         {/* Tech Stack Footer */}
-        <div className="mt-auto border-t border-slate-800/50 pt-10">
+        <div className="mt-auto border-t border-slate-800/50 pt-10 flex flex-col items-center gap-6">
 
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
             <div className="flex items-center gap-2 text-sm font-semibold text-slate-300">
@@ -152,9 +153,15 @@ export default function Home() {
               <Map className="w-4 h-4 text-yellow-500" /> Google Maps Platform
             </div>
           </div>
+
+          <Link href="/team" className="text-xs font-mono text-slate-600 hover:text-purple-400 transition-colors uppercase tracking-widest">
+            Built by Sprint Sisters
+          </Link>
+
         </div>
 
       </div>
     </main>
   );
 }
+
